@@ -1,0 +1,31 @@
+{
+  "name": "web3-is-going-just-great/credentials-dot-dev-php-sdk",
+  "description": "This SDK is NOT an official SDK of credentials.dev.",
+  "keywords": ["credentials", "dev", "credentials-dev" ,"php", "sdk"],
+  "license": "MIT",
+  "support": {
+    "issues": "https://github.com/AndreSchwarzer/credentials-dot-dev-php-sdk/issues",
+    "source": "https://github.com/AndreSchwarzer/credentials-dot-dev-php-sdk"
+  },
+  "authors": [
+    {
+      "name": "André Schwarzer"
+    }
+  ],
+  "require": {
+    "php": "^8.1",
+    "ext-json": "*",
+    "guzzlehttp/guzzle": "^7.0",
+    "nesbot/carbon": "^2.57"
+  },
+  "autoload": {
+    "psr-4": {
+      "Web3IsGoingJustGreat\\CredentialsDev\\SDK\\": "src/"
+    }
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}
