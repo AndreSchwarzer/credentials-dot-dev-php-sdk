@@ -38,7 +38,7 @@ use \Web3IsGoingJustGreat\CredentialsDev\SDK\Resources\CreatePerson;
 
 $sdkInstance->createPerson(CreatePerson $createPerson); // \Web3IsGoingJustGreat\CredentialsDev\SDK\Resources\Person
 $sdkInstance->getPerson(string $personId); // \Web3IsGoingJustGreat\CredentialsDev\SDK\Resources\Person
-$sdkInstance->deletePerson(string $personId); // \Web3IsGoingJustGreat\CredentialsDev\SDK\Resources\EmptyResult
+$sdkInstance->deletePerson(string $personId); // \Web3IsGoingJustGreat\CredentialsDev\SDK\Resources\EmptyResult or trows \Web3IsGoingJustGreat\CredentialsDev\SDK\Exceptions\NotFoundException
 ```
 
 ###### Subscription
