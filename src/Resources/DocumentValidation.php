@@ -53,7 +53,7 @@ class DocumentValidation extends Resource
     /**
      * Validated By.
      */
-    public string $validated_by;
+    public ?string $validated_by;
 
     /**
      * Validation Status.
