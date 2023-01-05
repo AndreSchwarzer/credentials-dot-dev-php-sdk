@@ -19,40 +19,58 @@ trait MakesHttpRequests
 {
     /**
      * Make a GET request to Credentials.dev servers and return the response.
+     *
+     * @phpstan-return array<int|string, mixed>|array{}
      */
-    public function get(string $uri): mixed
+    public function get(string $uri): array
     {
         return $this->request('GET', $uri);
     }
 
     /**
      * Make a POST request to Credentials.dev servers and return the response.
+     *
+     * @template T of Resource
+     * @phpstan-param T|array<int|string, mixed>|array{} $payload
+     * @phpstan-return array<int|string, mixed>|array{}
      */
-    public function post(string $uri, Resource|array $payload = []): mixed
+    public function post(string $uri, Resource|array $payload = []): array
     {
         return $this->request('POST', $uri, $payload);
     }
 
     /**
      * Make a PUT request to Credentials.dev servers and return the response.
+     *
+     * @template T of Resource
+     * @phpstan-param T|array<int|string, mixed>|array{} $payload
+     * @phpstan-return array<int|string, mixed>|array{}
      */
-    public function put(string $uri, Resource|array $payload = []): mixed
+    public function put(string $uri, Resource|array $payload = []): array
     {
         return $this->request('PUT', $uri, $payload);
     }
 
     /**
      * Make a PATCH request to Credentials.dev servers and return the response.
+     *
+     * @template T of Resource
+     * @phpstan-param T|array<int|string, mixed>|array{} $payload
+     * @phpstan-return array<int|string, mixed>|array{}
      */
-    public function patch(string $uri, Resource|array $payload = []): mixed
+    public function patch(string $uri, Resource|array $payload = []): array
     {
         return $this->request('PATCH', $uri, $payload);
     }
 
     /**
      * Make a DELETE request to Credentials.dev servers and return the response.
+     *
+     * @template T of Resource
+     * @phpstan-param T|array<int|string, mixed>|array{} $payload
+     * @phpstan-return array<int|string, mixed>|array{}
      */
-    public function delete(string $uri, Resource|array $payload = []): mixed
+    public function delete(string $uri, Resource|array $payload = []): array
     {
         return $this->request('DELETE', $uri, $payload);
     }
@@ -61,10 +79,14 @@ trait MakesHttpRequests
      * Make request to Credentials.dev servers and return the response.
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws Exception
+     *
+     * @template T of Resource
+     * @phpstan-param T|array<int|string, mixed>|array{} $payload
+     * @phpstan-return array<int|string, mixed>|array{}
      */
-    protected function request(string $verb, string $uri, Resource|array $payload = []): mixed
+    protected function request(string $verb, string $uri, Resource|array $payload = []): array
     {
-        if (is_a($payload, Resource::class)) {
+        if (is_object($payload) && is_a($payload, Resource::class)) {
             $payload = ['json' => $payload->toArray()];
         } else {
             if (isset($payload['json'])) {
@@ -79,12 +101,20 @@ trait MakesHttpRequests
         $statusCode = $response->getStatusCode();
 
         if ($statusCode < 200 || $statusCode > 299) {
-            return $this->handleRequestError($response);
+            $this->handleRequestError($response);
         }
 
         $responseBody = (string)$response->getBody();
 
-        return json_decode($responseBody, true) ?: $responseBody;
+        if ('[]' === $responseBody) {
+            return [];
+        }
+
+        try {
+            return (array) json_decode($responseBody, true, 512, JSON_THROW_ON_ERROR);
+        } catch (Exception $exception) {
+            throw new FailedActionException($exception->getMessage());
+        }
     }
 
     /**
@@ -93,7 +123,7 @@ trait MakesHttpRequests
     protected function handleRequestError(ResponseInterface $response): void
     {
         if ($response->getStatusCode() == 422) {
-            throw new ValidationException(json_decode((string)$response->getBody(), true));
+            throw new ValidationException((array) json_decode((string)$response->getBody(), true));
         }
 
         if ($response->getStatusCode() == 401) {
@@ -105,7 +135,7 @@ trait MakesHttpRequests
         }
 
         if ($response->getStatusCode() == 404) {
-            throw new NotFoundException();
+            throw new NotFoundException((string)$response->getBody());
         }
 
         if ($response->getStatusCode() == 400) {
@@ -136,6 +166,6 @@ trait MakesHttpRequests
             goto beginning;
         }
 
-        throw new TimeoutException($output);
+        throw new TimeoutException((array) $output);
     }
 }

@@ -3,10 +3,10 @@
 namespace Web3IsGoingJustGreat\CredentialsDev\SDK\Actions;
 
 use Web3IsGoingJustGreat\CredentialsDev\SDK\Resources\CreatePerson;
+use Web3IsGoingJustGreat\CredentialsDev\SDK\Resources\DeletionStatus;
 use Web3IsGoingJustGreat\CredentialsDev\SDK\Resources\Document;
 use Web3IsGoingJustGreat\CredentialsDev\SDK\Resources\DocumentStatistics;
 use Web3IsGoingJustGreat\CredentialsDev\SDK\Resources\DocumentValidationResponse;
-use Web3IsGoingJustGreat\CredentialsDev\SDK\Resources\EmptyResult;
 use Web3IsGoingJustGreat\CredentialsDev\SDK\Resources\Person;
 use Web3IsGoingJustGreat\CredentialsDev\SDK\Resources\PersonSubscription;
 use Web3IsGoingJustGreat\CredentialsDev\SDK\Resources\SubscribePerson;
@@ -51,11 +51,11 @@ trait ManagesPeople
      * Delete a person by id.
      *
      * @param string $personId
-     * @return EmptyResult
+     * @return DeletionStatus
      */
-    public function deletePerson(string $personId): EmptyResult
+    public function deletePerson(string $personId): DeletionStatus
     {
-        return new EmptyResult($this->delete("people/$personId/"), $this);
+        return new DeletionStatus($this->delete("people/$personId/"), $this);
     }
 
     /**
@@ -120,11 +120,11 @@ trait ManagesPeople
      *
      * @param string $personId
      * @param string $documentId
-     * @return EmptyResult
+     * @return DeletionStatus
      */
-    public function deletePersonDocument(string $personId, string $documentId): EmptyResult
+    public function deletePersonDocument(string $personId, string $documentId): DeletionStatus
     {
-        return new EmptyResult($this->get("people/$personId/documents/$documentId/"), $this);
+        return new DeletionStatus($this->delete("people/$personId/documents/$documentId/"), $this);
     }
 
     /**

@@ -1,0 +1,7 @@
+parameters:
+    paths:
+        - src/
+
+    # Level 9 is the highest level
+    # https://phpstan.org/user-guide/rule-levels
+    level: 9
