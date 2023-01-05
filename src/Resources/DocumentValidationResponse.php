@@ -1,20 +1,31 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Web3IsGoingJustGreat\CredentialsDev\SDK\Resources;
 
+/**
+ * @extends Resource<self>
+ */
 class DocumentValidationResponse extends Resource
 {
     public Document $document;
 
     /**
-     * @var Cert4TrustDocument[]
+     * Validations.
+     * 
+     * @var array<Cert4TrustDocument>
      */
     public array $validations;
 
     /**
-     * Look-up-table to support fill() method.
+     * {@inheritdoc}
      */
     protected array $attributesLookup = array (
         'document' => '\\Web3IsGoingJustGreat\\CredentialsDev\\SDK\\Resources\\Document',
+        'array_types' => 
+        array (
+                'validations' => '\\Web3IsGoingJustGreat\\CredentialsDev\\SDK\\Resources\\Cert4TrustDocument',
+        ),
     );
 }

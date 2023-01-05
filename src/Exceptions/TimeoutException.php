@@ -9,19 +9,17 @@ use Exception;
 class TimeoutException extends Exception
 {
     /**
-     * The output returned from the operation.
+     * @phpstan-param array{null|int|string|bool|float}|array{} $output
      */
-    public array $output;
-
-    public function __construct(array $output = [])
+    public function __construct(public array $output = [])
     {
         parent::__construct('Script timed out while waiting for the process to complete.');
-
-        $this->output = $output;
     }
 
     /**
      * The output returned from the operation.
+     *
+     * @phpstan-return array{null|int|string|bool|float}|array{}
      */
     public function output(): array
     {

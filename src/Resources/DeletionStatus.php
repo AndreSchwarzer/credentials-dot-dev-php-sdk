@@ -7,13 +7,11 @@ namespace Web3IsGoingJustGreat\CredentialsDev\SDK\Resources;
 /**
  * @extends Resource<self>
  */
-class Body_create_person_document extends Resource
+class DeletionStatus extends Resource
 {
     /**
-     * Document.
-     * 
-     * format: binary
+     * Deleted.
      */
-    public string $document;
+    public bool $deleted;
 
 }

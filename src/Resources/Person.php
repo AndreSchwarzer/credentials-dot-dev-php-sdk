@@ -1,10 +1,17 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Web3IsGoingJustGreat\CredentialsDev\SDK\Resources;
 
+/**
+ * @extends Resource<self>
+ */
 class Person extends Resource
 {
     /**
+     * Created At.
+     * 
      * The API expects and returns timestamps in the ISO 8601 format.
      * This SDK transforms 'string' representations to \Carbon\CarbonImmutable (vice versa) for you.
      * 
@@ -13,21 +20,40 @@ class Person extends Resource
      */
     public \Carbon\CarbonImmutable $created_at;
 
+    /**
+     * Id.
+     * 
+     * format: uuid4
+     */
     public string $id;
 
+    /**
+     * Tenant Id.
+     * 
+     * format: uuid4
+     */
     public string $tenant_id;
 
+    /**
+     * External Identifier.
+     */
     public string $external_identifier;
 
     /**
-     * @var Document[]
+     * Documents.
+     * 
+     * @var array<Document>
      */
     public array $documents;
 
     /**
-     * Look-up-table to support fill() method.
+     * {@inheritdoc}
      */
     protected array $attributesLookup = array (
         'created_at' => '\\Carbon\\CarbonImmutable',
+        'array_types' => 
+        array (
+                'documents' => '\\Web3IsGoingJustGreat\\CredentialsDev\\SDK\\Resources\\Document',
+        ),
     );
 }

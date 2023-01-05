@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Web3IsGoingJustGreat\CredentialsDev\SDK\Resources;
 
 enum InstitutionType: string

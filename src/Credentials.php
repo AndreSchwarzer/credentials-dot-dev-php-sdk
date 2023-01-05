@@ -8,6 +8,7 @@ use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Web3IsGoingJustGreat\CredentialsDev\SDK\Actions\ManagesPeople;
+use Web3IsGoingJustGreat\CredentialsDev\SDK\Resources\Resource;
 
 /**
  * @see https://raw.githubusercontent.com/laravel/forge-sdk/3.x/src/Forge.php
@@ -51,6 +52,12 @@ class Credentials
 
     /**
      * Transform the items of the collection to the given class.
+     *
+     * @template T of Resource
+     * @phpstan-param array<string|int, mixed>|array{} $collection
+     * @phpstan-param class-string<T> $class
+     * @phpstan-param array<int|string, mixed>|array{} $extraData
+     * @phpstan-return array<T>
      */
     protected function transformCollection(array $collection, string $class, array $extraData = []): array
     {
@@ -70,7 +77,9 @@ class Credentials
 
         $this->accessToken = $accessToken;
 
-        $this->guzzleClient = $guzzleClient ?: new Client([
+        $this->guzzleClient = $guzzleClient ?? new Client([
+            // TODO Remove when prod is available
+            // @phpstan-ignore-next-line
             'base_uri' => $useSandbox ? 'https://sandbox.api.credentials.dev/v1/' : 'https://api.credentials.dev/v1/',
             'http_errors' => false,
             'headers' => [

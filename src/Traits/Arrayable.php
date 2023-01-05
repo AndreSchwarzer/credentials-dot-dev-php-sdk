@@ -3,13 +3,16 @@
 namespace Web3IsGoingJustGreat\CredentialsDev\SDK\Traits;
 
 use Carbon\CarbonImmutable;
-use UnitEnum;
+use BackedEnum;
 use Web3IsGoingJustGreat\CredentialsDev\SDK\Interfaces\Arrayable as ArrayableInterface;
 use function get_object_vars;
 use function array_map;
 
 trait Arrayable
 {
+    /**
+     * @phpstan-return array<string, mixed>
+     */
     public function toArray(): array
     {
         $returnArray = array_map(
@@ -22,7 +25,7 @@ trait Arrayable
                     return $item->toArray();
                 }
 
-                if ($item instanceof UnitEnum) {
+                if ($item instanceof BackedEnum) {
                     return $item->value;
                 }
 
